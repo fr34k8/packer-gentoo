@@ -25,7 +25,7 @@
       "iso_checksum_type": "sha1",
       "iso_url": "http://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/4.2.0/systemrescuecd-x86-4.2.0.iso",
       "net_device": "virtio-net",
-      "output_directory": "image/current/x86_64/qemu",
+      "output_directory": "images/current/x86_64/qemu",
       "qemuargs": [
         [
           "-device",
@@ -33,7 +33,7 @@
         ],
         [
           "-drive",
-          "if=none,cache=unsafe,id=drive0,discard=unmap,file=image/current/x86_64/qemu/gentoo-current-x86_64.raw"
+          "if=none,cache=unsafe,id=drive0,discard=unmap,file=images/current/x86_64/qemu/gentoo-current-x86_64.raw"
         ],
         [
           "-device",
