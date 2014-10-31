@@ -17,7 +17,8 @@
       ],
       "boot_wait": "5s",
       "disk_interface": "scsi",
-      "disk_size": 10000,
+      "disk_size": 8000,
+      "disk_cache": "unsafe",
       "format": "raw",
       "headless": true,
       "http_directory": "http",
@@ -45,7 +46,7 @@
         ],
         [
           "-m",
-          "768m"
+          "768"
         ]
       ],
       "shutdown_command": "shutdown -h now",
@@ -66,14 +67,8 @@
   ],
   "post-processors": [
     {
-      "type": "strip",
-      "keep_input_artifact": false,
-      "output": "output/archlinux-current-x86_64-strip/"
-    },
-    {
       "type": "compress",
-      "format": "gzip",
-      "keep_input_artifact": false,
+      "format": "pgzip",
       "output": "output/archlinux-current-x86_64-compress/"
     }
   ]
