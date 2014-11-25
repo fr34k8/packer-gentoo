@@ -17,16 +17,17 @@
       ],
       "boot_wait": "5s",
       "disk_interface": "scsi",
-      "disk_size": 8000,
+      "disk_size": 7000,
       "disk_cache": "unsafe",
       "format": "raw",
       "headless": true,
       "http_directory": "http",
       "iso_checksum": "6e66fa98c4dec03be5c59fd203b0622ac8d8b7c2",
       "iso_checksum_type": "sha1",
-      "iso_url": "http://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/4.2.0/systemrescuecd-x86-4.2.0.iso",
+      "iso_url": "http://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/4.2.0/systemrescuecd-x86-4.2.0.iso/download",
       "net_device": "virtio-net",
       "output_directory": "output/gentoo-current-x86_64-qemu",
+      "machine_type": "pc-i440fx-1.7",
       "qemuargs": [
         [
           "-device",
@@ -46,11 +47,11 @@
         ],
         [
           "-m",
-          "768"
+          "1280"
         ]
       ],
       "shutdown_command": "shutdown -h now",
-      "ssh_password": "build",
+      "ssh_password": "packer",
       "ssh_username": "root",
       "ssh_wait_timeout": "10000s",
       "type": "qemu",
@@ -60,6 +61,7 @@
   "provisioners": [
     {
       "scripts": [
+        "scripts/base.sh",
         "scripts/cleanup.sh"
       ],
       "type": "shell"
@@ -69,7 +71,7 @@
     {
       "type": "compress",
       "format": "pgzip",
-      "output": "output/archlinux-current-x86_64-compress/"
+      "output": "output/gentoo-current-x86_64-compress/"
     }
   ]
 }

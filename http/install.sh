@@ -73,7 +73,7 @@ echo "LANG=\"en_US.UTF-8\"" > /mnt/gentoo/etc/env.d/02locale
 echo "rc_logger=\"YES\"" >> /mnt/gentoo/etc/rc.conf
 echo "rc_sys=\"\"" >> /mnt/gentoo/etc/rc.conf
 
-wget $(cat /tmp/host)/config-3.12.21 -O /mnt/gentoo/tmp/config-3.12.21
+wget $(cat /tmp/host)/config-3.14 -O /mnt/gentoo/tmp/config-3.14
 chroot /mnt/gentoo /bin/bash -ex<<DATAEOF
 
 echo UTC > /etc/timezone
@@ -100,7 +100,7 @@ grub2-install /dev/sda
 emerge --nospinner sys-kernel/gentoo-sources dracut openssh
 rc-update add sshd default
 cd /usr/src/linux
-mv /tmp/config-3.12.21 .config
+mv /tmp/config-3.14 .config
 make olddefconfig
 
 make all modules_install install
@@ -109,7 +109,7 @@ make clean
 
 grub2-mkconfig -o /boot/grub/grub.cfg
 
-echo root:build | chpasswd
+echo root:packer | chpasswd
 DATAEOF
 
 reboot
