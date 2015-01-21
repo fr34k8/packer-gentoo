@@ -36,7 +36,7 @@ cp -L /etc/resolv.conf /mnt/gentoo/etc/
 echo hostname="build" > /mnt/gentoo/etc/conf.d/hostname
 echo -e "
 /dev/sda1    /           ext4        defaults,discard,relatime         0 1
-none         /var/tmp    tmpfs       size=4G,nr_inodes=1M     0 0
+#none         /var/tmp    tmpfs       size=4G,nr_inodes=1M     0 0
 
 " >> /mnt/gentoo/etc/fstab
 
@@ -73,7 +73,7 @@ echo "LANG=\"en_US.UTF-8\"" > /mnt/gentoo/etc/env.d/02locale
 echo "rc_logger=\"YES\"" >> /mnt/gentoo/etc/rc.conf
 echo "rc_sys=\"\"" >> /mnt/gentoo/etc/rc.conf
 
-wget $(cat /tmp/host)/config-3.14 -O /mnt/gentoo/tmp/config-3.14
+wget $(cat /tmp/host)/x86_64_defconfig-3.18 -O /mnt/gentoo/tmp/x86_64_defconfig-3.18
 chroot /mnt/gentoo /bin/bash -ex<<DATAEOF
 
 echo UTC > /etc/timezone
@@ -100,7 +100,7 @@ grub2-install /dev/sda
 emerge --nospinner sys-kernel/gentoo-sources dracut openssh
 rc-update add sshd default
 cd /usr/src/linux
-mv /tmp/config-3.14 .config
+mv /tmp/x86_64_defconfig-3.18 .config
 make olddefconfig
 
 make all modules_install install
