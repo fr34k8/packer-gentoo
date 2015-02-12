@@ -17,7 +17,7 @@
       ],
       "boot_wait": "5s",
       "disk_interface": "scsi",
-      "disk_size": 10000,
+      "disk_size": 5000,
       "disk_cache": "unsafe",
       "format": "raw",
       "headless": true,
@@ -26,7 +26,7 @@
       "iso_checksum_type": "sha1",
       "iso_url": "http://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/4.2.0/systemrescuecd-x86-4.2.0.iso/download",
       "net_device": "virtio-net",
-      "output_directory": "output/gentoo-current-x86_64-qemu",
+      "output_directory": "output/gentoo-current-x86_32-qemu",
       "machine_type": "pc-i440fx-1.7",
       "qemuargs": [
         [
@@ -35,7 +35,7 @@
         ],
         [
           "-drive",
-          "if=none,cache=unsafe,id=drive0,discard=unmap,file=output/gentoo-current-x86_64-qemu/gentoo-current-x86_64.raw"
+          "if=none,cache=unsafe,id=drive0,discard=unmap,file=output/gentoo-current-x86_32-qemu/gentoo-current-x86_32.raw"
         ],
         [
           "-device",
@@ -47,7 +47,7 @@
         ],
         [
           "-m",
-          "1280"
+          "512"
         ]
       ],
       "shutdown_command": "shutdown -h now",
@@ -55,7 +55,7 @@
       "ssh_username": "root",
       "ssh_wait_timeout": "10000s",
       "type": "qemu",
-      "vm_name": "gentoo-current-x86_64"
+      "vm_name": "gentoo-current-x86_32"
     }
   ],
   "provisioners": [
@@ -72,7 +72,7 @@
       {
         "type": "compress",
         "format": "pgzip",
-        "output": "output/gentoo-current-x86_64-compress/"
+        "output": "output/gentoo-current-x86_32-compress/"
       }
     ]
   ]

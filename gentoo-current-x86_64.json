@@ -17,7 +17,7 @@
       ],
       "boot_wait": "5s",
       "disk_interface": "scsi",
-      "disk_size": 10000,
+      "disk_size": 5000,
       "disk_cache": "unsafe",
       "format": "raw",
       "headless": true,
@@ -47,7 +47,7 @@
         ],
         [
           "-m",
-          "1280"
+          "512"
         ]
       ],
       "shutdown_command": "shutdown -h now",

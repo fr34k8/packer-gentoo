@@ -1,8 +1,8 @@
 #!/bin/sh -ex
 
-emerge sync
-emerge gentoolkit
-emerge --update --deep --with-bdeps=y --newuse @world
-emerge --depclean
-revdep-rebuild
-grub-mkconfig -o /boot/grub/grub.cfg
+emerge --nospinner cfg-update
+emerge --nospinner --autounmask-write dracut || true
+yes 1 | cfg-update -u
+
+dracut -H -f /boot/initramfs-$(uname -r).img
+grub2-mkconfig -o /boot/grub/grub.cfg

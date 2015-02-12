@@ -1,5 +1,12 @@
 #!/bin/bash -xe
 
+ARCH=""
+if [ "x$(uname -m)" == "xx86_64" ];then
+    ARCH="x86_64"
+else
+    ARCH="x86_32"
+fi
+
 ntpdate ntp.se &
 
 fdisk /dev/sda <<EOF
@@ -20,10 +27,15 @@ mkfs.ext4 /dev/sda1
 
 # Mount other partitions
 mount -t ext4 -o rw,relatime,discard /dev/sda1 /mnt/gentoo
+FILE=""
+if [ "${ARCH}" == "x86_64" ];then
+    FILE=$(wget -q http://mirror.yandex.ru/gentoo-distfiles/releases/amd64/autobuilds/current-stage3-amd64/ -O - | grep -o -e "stage3-amd64-\w*.tar.bz2" | uniq)
+    wget http://mirror.yandex.ru/gentoo-distfiles/releases/amd64/autobuilds/current-stage3-amd64/$FILE -O /mnt/gentoo/stage.tar.bz2 || exit 1
+else
+    FILE=$(wget -q http://mirror.yandex.ru/gentoo-distfiles/releases/x86/autobuilds/current-stage3-i686/ -O - | grep -o -e "stage3-i686-\w*.tar.bz2" | uniq)
+    wget http://mirror.yandex.ru/gentoo-distfiles/releases/x86/autobuilds/current-stage3-i686/$FILE -O /mnt/gentoo/stage.tar.bz2 || exit 1
+fi
 
-FILE=$(wget -q http://mirror.yandex.ru/gentoo-distfiles/releases/amd64/autobuilds/current-stage3-amd64/ -O - | grep -o -e "stage3-amd64-\w*.tar.bz2" | uniq)
-[ -z "$FILE" ] && exit 1
-wget http://mirror.yandex.ru/gentoo-distfiles/releases/amd64/autobuilds/current-stage3-amd64/$FILE -O /mnt/gentoo/stage.tar.bz2 || exit 1
 tar -C /mnt/gentoo -jxpf /mnt/gentoo/stage.tar.bz2
 rm -f /mnt/gentoo/stage.tar.bz2
 wget http://mirror.yandex.ru/gentoo-distfiles/snapshots/portage-latest.tar.bz2 -O /mnt/gentoo/portage.tar.bz2
@@ -36,8 +48,6 @@ cp -L /etc/resolv.conf /mnt/gentoo/etc/
 echo hostname="build" > /mnt/gentoo/etc/conf.d/hostname
 echo -e "
 /dev/sda1    /           ext4        defaults,discard,relatime         0 1
-#none         /var/tmp    tmpfs       size=4G,nr_inodes=1M     0 0
-
 " >> /mnt/gentoo/etc/fstab
 
 sed -i '/\/dev\/BOOT.*/d' /mnt/gentoo/etc/fstab
@@ -45,12 +55,8 @@ sed -i '/\/dev\/ROOT.*/d' /mnt/gentoo/etc/fstab
 sed -i '/\/dev\/SWAP.*/d' /mnt/gentoo/etc/fstab
 
 mount -t proc proc /mnt/gentoo/proc
-mount --rbind /sys /mnt/gentoo/sys
-mount --rbind /dev /mnt/gentoo/dev
-
-cat <<EOF >> /mnt/gentoo/etc/portage/package.keywords
-sys-kernel/dracut ~amd64 amd64
-EOF
+mount -o bind /sys /mnt/gentoo/sys
+mount -o rbind /dev /mnt/gentoo/dev
 
 MAKECONF=/mnt/gentoo/etc/portage/make.conf
 [ ! -f $MAKECONF ] && [ -f /mnt/gentoo/etc/make.conf ] && MAKECONF=/mnt/gentoo/etc/make.conf
@@ -65,7 +71,6 @@ USE="${USE} -X -bindist idn iproute2"
 CFLAGS="-mtune=generic -O2 -pipe"
 CXXFLAGS="\${CFLAGS}"
 LINGUAS=""
-DRACUT_MODULES="qemu qemu-net"
 DATAEOF
 
 echo "keymap=\"sv-latin1\"" >> /mnt/gentoo/etc/conf.d/keymaps
@@ -73,7 +78,7 @@ echo "LANG=\"en_US.UTF-8\"" > /mnt/gentoo/etc/env.d/02locale
 echo "rc_logger=\"YES\"" >> /mnt/gentoo/etc/rc.conf
 echo "rc_sys=\"\"" >> /mnt/gentoo/etc/rc.conf
 
-wget $(cat /tmp/host)/x86_64_defconfig-3.18 -O /mnt/gentoo/tmp/x86_64_defconfig-3.18
+wget $(cat /tmp/host)/vmlinuz-3.18.3-${ARCH} -O /mnt/gentoo/boot/vmlinuz-3.18.3
 chroot /mnt/gentoo /bin/bash -ex<<DATAEOF
 
 echo UTC > /etc/timezone
@@ -91,21 +96,12 @@ echo SYNC=\"rsync://mirror.yandex.ru/gentoo-portage/\" >> /etc/portage/make.conf
 echo "updating Portage Tree..."
 emerge --sync --quiet
 
-
-
 emerge --nospinner  grub
 sed -i 's/^#\s*GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /etc/default/grub
 grub2-install /dev/sda
 
-emerge --nospinner sys-kernel/gentoo-sources dracut openssh
+emerge --nospinner openssh
 rc-update add sshd default
-cd /usr/src/linux
-mv /tmp/x86_64_defconfig-3.18 .config
-make olddefconfig
-
-make all modules_install install
-dracut -H -k \$(ls /lib/modules) -f
-make clean
 
 grub2-mkconfig -o /boot/grub/grub.cfg
 
