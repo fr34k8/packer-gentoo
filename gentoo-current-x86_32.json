@@ -71,7 +71,7 @@
     [
       {
         "type": "compress",
-        "format": "pgzip",
+        "format": "bgzf",
         "output": "output/gentoo-current-x86_32-compress/"
       }
     ]
