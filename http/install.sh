@@ -78,7 +78,7 @@ echo "LANG=\"en_US.UTF-8\"" > /mnt/gentoo/etc/env.d/02locale
 echo "rc_logger=\"YES\"" >> /mnt/gentoo/etc/rc.conf
 echo "rc_sys=\"\"" >> /mnt/gentoo/etc/rc.conf
 
-mv /tmp/vmlinuz-* -O /mnt/gentoo/boot/
+mv /tmp/vmlinuz-* /mnt/gentoo/boot/
 chroot /mnt/gentoo /bin/bash -ex<<DATAEOF
 
 echo UTC > /etc/timezone
