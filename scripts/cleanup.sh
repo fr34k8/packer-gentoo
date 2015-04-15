@@ -1,12 +1,7 @@
 #!/bin/sh -ex
 
 emerge --nospinner cfg-update
-emerge --nospinner --autounmask-write cloud-init || true
 yes 1 | cfg-update -u
-emerge --nospinner cloud-init
-for s in config final init init-local ; do
-    rc-update add cloud-$s default
-done
 
 # Removing leftover leases and persistent rules
 echo "cleaning up dhcp leases"
