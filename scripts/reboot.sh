@@ -1,2 +1,3 @@
 #!/bin/sh -ex
-systemctl reboot
+
+reboot
