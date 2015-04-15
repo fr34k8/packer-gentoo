@@ -62,8 +62,16 @@
     {
       "scripts": [
         "scripts/base.sh",
+        "scripts/reboot.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "scripts": [
+        "scripts/cloudinit.sh",
         "scripts/cleanup.sh"
       ],
+      "pause_before": "30s",
       "type": "shell"
     }
   ],
