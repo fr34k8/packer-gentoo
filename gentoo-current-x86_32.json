@@ -12,7 +12,7 @@
           "<wait10>",
           "<enter>",
           "killall -9 sshd<enter><wait>",
-          "echo -n http://{{ .HTTPIP }}:{{ .HTTPPort }}/ > /tmp/host<enter><wait>",
+          "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/vmlinuz-3.18.3-x86_32 -O /tmp/vmlinuz-3.18.3-x86_32<enter>",
           "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.sh -O /tmp/install.sh ; chmod +x /tmp/install.sh ; /tmp/install.sh<enter>"
       ],
       "boot_wait": "5s",
