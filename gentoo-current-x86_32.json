@@ -81,6 +81,10 @@
         "type": "compress",
         "format": "bgzf",
         "output": "output/gentoo-current-x86_32-compress/"
+      },
+      {
+        "type": "checksum",
+        "output": "output/gentoo-current-x86_32-compress/"
       }
     ]
   ]
