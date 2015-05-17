@@ -35,7 +35,7 @@
         ],
         [
           "-drive",
-          "if=none,cache=unsafe,id=drive0,discard=unmap,file=output/gentoo-current-x86_32-qemu/gentoo-current-x86_32.raw"
+          "if=none,cache=unsafe,id=drive0,discard=unmap,file=output/gentoo-current-x86_32-qemu/gentoo-current-x86_32"
         ],
         [
           "-device",
