@@ -96,6 +96,7 @@ echo SYNC=\"rsync://mirror.yandex.ru/gentoo-portage/\" >> /etc/portage/make.conf
 echo "updating Portage Tree..."
 emerge --sync --quiet
 
+echo 'GRUB_PLATFORMS="pc qemu"' >> /etc/make.conf
 emerge --nospinner  grub
 sed -i 's/^#\s*GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /etc/default/grub
 grub2-install /dev/sda
@@ -110,4 +111,3 @@ DATAEOF
 
 reboot
 sleep 50
-
