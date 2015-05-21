@@ -3,7 +3,7 @@
     {
       "accelerator": "kvm",
       "boot_command": [
-          "<down><down><down><down><down><down><down><down><down><down><down><enter>",
+          "<down><down><down><down><down><down><down><down><down><down><enter>",
           "<enter>",
           "<wait10>",
           "<enter>",

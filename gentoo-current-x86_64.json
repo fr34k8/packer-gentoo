@@ -38,7 +38,7 @@
       "shutdown_command": "shutdown -h now",
       "ssh_password": "packer",
       "ssh_username": "root",
-      "ssh_wait_timeout": "1200s",
+      "ssh_wait_timeout": "12000s",
       "type": "qemu",
       "vm_name": "gentoo-current-x86_64"
     }
