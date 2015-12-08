@@ -104,7 +104,7 @@ grub2-install /dev/sda
 
 emerge --nospinner openssh
 rc-update add sshd default
-
+sed -i -e 's|*.PermitRootLogin.*|PermitRootLogin yes|g' /etc/ssh/sshd_config
 grub2-mkconfig -o /boot/grub/grub.cfg
 
 echo root:packer | chpasswd
